@@ -8,76 +8,71 @@
 from django.db import models
 
 
-class Client(models.Model):
-    clientid = models.IntegerField(primary_key=True)
-    secondname = models.CharField(max_length=20, blank=True, null=True)
-    firstname = models.CharField(max_length=20, blank=True, null=True)
-    thirdname = models.CharField(max_length=20, blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
-    email = models.CharField(max_length=20, blank=True, null=True)
-    birthdate = models.DateField(blank=True, null=True)
-    docid = models.ForeignKey('Doc', models.DO_NOTHING, db_column='docid')
-
-    class Meta:
-        db_table = 'client'
-        unique_together = (('clientid', 'docid'),)
-
-
 class Doc(models.Model):
-    docid = models.CharField(primary_key=True, max_length=18)
-    passportissue = models.DateField(blank=True, null=True)
+    passportIssue = models.DateField(blank=True, null=True)
 
     class Meta:
-        db_table = 'doc'
+        db_table = 'Doc'
 
 
-class Foreignpassport(models.Model):
-    seriesandnumber = models.CharField(max_length=20, blank=True, null=True)
-    docid = models.OneToOneField(Doc, models.DO_NOTHING, db_column='docid', primary_key=True)
+class Client(models.Model):
+    secondName = models.CharField(max_length=20, blank=False, null=False)
+    firstName = models.CharField(max_length=20, blank=False, null=False)
+    thirdName = models.CharField(max_length=20, blank=False, null=False)
+    phone = models.CharField(max_length=20, blank=False, null=False)
+    email = models.CharField(max_length=20, blank=False, null=False)
+    birthDate = models.DateField(blank=False, null=False)
+    doc = models.ForeignKey(Doc, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'foreignpassport'
+        db_table = 'Client'
 
 
-class Idcard(models.Model):
-    issuedby = models.CharField(max_length=20, blank=True, null=True)
+class ForeignPassport(models.Model):
+    seriesAndNumber = models.CharField(max_length=20, blank=True, null=True)
+    doc = models.OneToOneField(Doc, on_delete=models.CASCADE, primary_key=True)
+
+    class Meta:
+        db_table = 'ForeignPassport'
+
+
+class IDCard(models.Model):
+    issuedBy = models.CharField(max_length=20, blank=True, null=True)
     number = models.CharField(max_length=20, blank=True, null=True)
     notation = models.CharField(max_length=20, blank=True, null=True)
-    docid = models.OneToOneField(Doc, models.DO_NOTHING, db_column='docid', primary_key=True)
+    doc = models.OneToOneField(Doc, on_delete=models.CASCADE, primary_key=True)
 
     class Meta:
-        db_table = 'idcard'
+        db_table = 'IDCard'
 
 
-class Insuredevent(models.Model):
-    description = models.CharField(max_length=20, blank=True, null=True)
-    hint = models.CharField(max_length=20, blank=True, null=True)
-    eventid = models.IntegerField(primary_key=True)
-    impactprice = models.IntegerField(blank=True, null=True)
+class InsuredEvent(models.Model):
+    description = models.CharField(max_length=100, blank=False, null=False)
+    hint = models.CharField(max_length=100, blank=False, null=False)
+    impactPrice = models.FloatField(blank=False, null=False)
 
     class Meta:
-        db_table = 'insuredevent'
+        db_table = 'InsuredEvent'
 
 
 class Police(models.Model):
-    policeid = models.IntegerField(primary_key=True)
-    geojson = models.CharField(max_length=20, blank=True, null=True)
-    cadastralnumber = models.CharField(max_length=20, blank=True, null=True)
-    clientid = models.ForeignKey(Client, models.DO_NOTHING, db_column='clientid', blank=True, null=True)
-    price = models.IntegerField(blank=True, null=True)
-    term = models.IntegerField(blank=True, null=True)
-    coating = models.IntegerField(blank=True, null=True)
-    startdate = models.DateField(blank=True, null=True)
-    docid = models.CharField(max_length=18, blank=True, null=True)
+    geoJson = models.TextField(blank=False, null=False)
+    cadastralNumber = models.CharField(max_length=20, blank=False, null=False)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=False, null=False)
+    price = models.FloatField(blank=False, null=False)
+    term = models.IntegerField(blank=False, null=False)
+    coating = models.FloatField(blank=False, null=False)
+    startDate = models.DateField(blank=False, null=False)
+    ensuredEvents = models.ManyToManyField(InsuredEvent)
 
     class Meta:
-        db_table = 'police'
+        db_table = 'Police'
 
 
-class Ukrainepassport(models.Model):
-    seriesandnumber = models.CharField(max_length=20, blank=True, null=True)
-    issuedby = models.DateField(blank=True, null=True)
-    docid = models.OneToOneField(Doc, models.DO_NOTHING, db_column='docid', primary_key=True)
+class UkrainePassport(models.Model):
+    seriesAndNumber = models.CharField(max_length=20, blank=False, null=False)
+    issuedBy = models.CharField(blank=False, null=False, max_length=20)
+    doc = models.OneToOneField(Doc, on_delete=models.CASCADE, primary_key=True)
 
     class Meta:
-        db_table = 'ukrainepassport'
+        db_table = 'UkrainePassport'
