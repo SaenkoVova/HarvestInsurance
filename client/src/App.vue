@@ -32,10 +32,7 @@
             <v-app-bar-nav-icon @click.stop="miniVariant = !miniVariant" />
             <v-toolbar-title v-text="title" />
             <v-spacer />
-            <v-btn-toggle
-
-            >
-                <auth-user :title="'Увійти'" />
+            <v-btn-toggle v-if="getAuthState">
                 <v-btn
                     color="primary"
                     :to="'/profile'"
@@ -59,6 +56,30 @@
                     </v-icon>
                 </v-btn>
             </v-btn-toggle>
+            <v-btn-toggle v-else>
+              <auth-user :title="'Увійти'" />
+              <v-btn
+                  color="primary"
+                  :to="'/register'"
+              >
+                Зареєструватися
+                <v-icon
+                    right
+                    color="white"
+                >
+                  mdi-account-circle
+                </v-icon>
+              </v-btn>
+              <v-btn
+                  dark
+                  color="primary"
+                  @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+              >
+                <v-icon dark>
+                  mdi-weather-night
+                </v-icon>
+              </v-btn>
+            </v-btn-toggle>
         </v-app-bar>
         <v-main>
             <v-container fluid style="padding: 0">
@@ -76,6 +97,7 @@
 
 <script>
     import AuthUser from "./components/popups/AuthUser";
+    import {mapGetters} from "vuex";
     export default {
         data () {
             return {
@@ -95,13 +117,18 @@
                     },
                     {
                         icon: 'mdi-police-badge-outline',
-                        title: 'Страхові поліси',
+                        title: 'faQ',
                         to: '/polices'
                     }
                 ],
                 miniVariant: false,
                 title: 'Страхування врожаю'
             }
+        },
+        computed: {
+          ...mapGetters({
+            getAuthState: 'user/getAuthState'
+          })
         },
         components: {
             AuthUser

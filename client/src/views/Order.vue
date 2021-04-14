@@ -86,43 +86,7 @@
                     </v-menu>
                 </v-col>
             </v-row>
-            <v-tabs @change="tabChanged" class="mb-5">
-                <v-tab>Паспорт України</v-tab>
-                <v-tab>ID карта</v-tab>
-                <v-tab>Закордонний паспорт</v-tab>
-            </v-tabs>
-            <v-row>
-                <v-col v-if="currentTab === 0 || currentTab === 2">
-                    <v-text-field
-                            label="Серія і номер"
-                            outlined
-                    ></v-text-field>
-                </v-col>
-                <v-col>
-                    <v-text-field
-                            label="Коли виданий"
-                            outlined
-                    ></v-text-field>
-                </v-col>
-                <v-col v-if="currentTab === 0 || currentTab === 1">
-                    <v-text-field
-                            label="Ким виданий"
-                            outlined
-                    ></v-text-field>
-                </v-col>
-                <v-col v-if="currentTab === 1">
-                    <v-text-field
-                            label="Номер"
-                            outlined
-                    ></v-text-field>
-                </v-col>
-                <v-col v-if="currentTab === 1">
-                    <v-text-field
-                            label="Запис"
-                            outlined
-                    ></v-text-field>
-                </v-col>
-            </v-row>
+            <doc-tabs></doc-tabs>
             <div>
                 <p>Контактні дані</p>
                 <v-row>
@@ -157,20 +121,14 @@
     import ControlMap from "../components/order/ControlMap";
     import InsuredEventSelector from "../components/order/InsuredEventSelector";
     import DatePicker from "../components/order/DatePicker";
+    import DocTabs from "@/components/order/DocTabs";
     export default {
         name: 'Order',
         data: () => ({
-            date: new Date().toISOString().substr(0, 10),
-            menu: false,
-            modal: false,
-            menu2: false,
-            currentTab: 1
+          date: new Date().toISOString().substr(0, 10),
+          menu: false,
+          currentTab: 1
         }),
-        methods: {
-            tabChanged(tab) {
-                this.currentTab = tab;
-            }
-        },
-        components: {DatePicker, InsuredEventSelector, ControlMap}
+        components: {DocTabs, DatePicker, InsuredEventSelector, ControlMap}
     }
 </script>
