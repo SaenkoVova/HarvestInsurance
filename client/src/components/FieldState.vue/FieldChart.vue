@@ -26,7 +26,7 @@ export default {
 
     this.renderChart(
         {
-          labels: [1, 2, 3, 4, 5, 6, 7, 8],
+          labels: ['2019-03', '2019-04', '2019-05', '2019-06', '2019-08', '2019-09', '2019-10', '2019-11', '2020-03', '2020-04', '2020-05', '2020-06', '2020-08', '2020-09', '2020-10', '2020-11'],
           datasets: [
             {
               backgroundColor: this.gradient2,
@@ -35,27 +35,27 @@ export default {
               pointRadius: 5,
               pointHoverRadius: 10,
               pointBackgroundColor: '#fff',
-              data: [1, 54, 3, 76, 5, 87, 7, 8],
+              data: [12, 13, 16, 35, 27, 20, 14, 3, 6, 8, 18, 17, 5, 6, 5, 6],
               lineWidth: 3,
               borderCapStyle: 'butt',
               borderWidth: 5,
               borderDash: [],
               strokeColor: "rgba(151,187,205,1)",
             },
-            {
-              backgroundColor: this.gradient,
-              borderColor: 'rgba(255, 0,0, 0.5)',
-              lineTension: 0.1,
-              pointRadius: 0,
-              pointHoverRadius: 5,
-              pointBackgroundColor: '#fff',
-              data: [65, 9, 3, 65, 5, 76, 7, 8],
-              lineWidth: 2,
-              borderCapStyle: 'butt',
-              borderWidth: 5,
-              borderDash: [],
-              strokeColor: "rgba(151,187,205,1)"
-            },
+            // {
+            //   backgroundColor: this.gradient,
+            //   borderColor: 'rgba(255, 0,0, 0.5)',
+            //   lineTension: 0.1,
+            //   pointRadius: 0,
+            //   pointHoverRadius: 5,
+            //   pointBackgroundColor: '#fff',
+            //   data: [65, 9, 3, 65, 5, 76, 7, 8],
+            //   lineWidth: 2,
+            //   borderCapStyle: 'butt',
+            //   borderWidth: 5,
+            //   borderDash: [],
+            //   strokeColor: "rgba(151,187,205,1)"
+            // },
           ]
         },
         {

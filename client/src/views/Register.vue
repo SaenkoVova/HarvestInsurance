@@ -71,16 +71,53 @@
               cols="12"
               sm="6"
           >
+            <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="birthDate"
+                    label="Дата народження"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    :rules="[rules.required]"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                  ref="picker"
+                  v-model="date"
+                  :max="new Date().toISOString().substr(0, 10)"
+                  min="1950-01-01"
+                  @change="save"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
             <v-text-field
-                v-model="birthDate"
+                v-model="password"
+                type="password"
                 :rules="[rules.required]"
-                label="Дата народження"
-                counter
-                maxlength="10"
+                label="Пароль"
+            ></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field
+                type="password"
+                v-model="repeatPassword"
+                :rules="[rules.required]"
+                label="Повторіть пароль"
             ></v-text-field>
           </v-col>
         </v-row>
-        <doc-tabs ref="docTabs"></doc-tabs>
         <v-btn type="submit" block color="primary" large :disabled="!valid">Зареєструватися</v-btn>
       </v-container>
     </v-form>
@@ -88,51 +125,54 @@
 </template>
 
 <script>
-import DocTabs from "@/components/order/DocTabs";
 import {mapActions} from "vuex";
 export default {
-  components: {DocTabs},
   data: () => ({
     valid: false,
-    name: '',
     secondName: '',
-    phone: '',
-    email: '',
     thirdName: '',
     birthDate: '',
+    password: '',
+    repeatPassword: '',
+    name: '',
+    phone: '',
+    email: '',
+    menu: false,
     rules: {
       required: value => !!value || 'Це поле обов\'язкове.',
-      counter: value => value.length <= 20 || 'Max 20 characters',
+      counter: value => value.length <= 20 || 'Максимальна довжина 20 символів',
       email: value => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(value) || 'Invalid e-mail.'
+        return pattern.test(value) || 'Неправильний e-mail.'
       },
     },
   }),
+  watch: {
+    menu (val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+    },
+  },
   methods: {
     ...mapActions({
       signUp: 'user/signUp'
     }),
-    register() {
+    save (date) {
+      this.$refs.menu.save(date)
+    },
+    async register() {
       let payload = {
         user: {
-          firstName: this.name,
           secondName: this.secondName,
           thirdName: this.thirdName,
+          birthDate: this.birthDate,
+          firstName: this.name,
           email: this.email,
           phone: this.phone,
-          birthDate: this.birthDate
-        },
-        doc: {
-          seriesAndNumber: this.$refs.docTabs.seriesAndNumber,
-          passportIssue: this.$refs.docTabs.issueDate,
-          issuedBy: this.$refs.docTabs.issuedBy,
-          number: this.$refs.docTabs.seriesAndNumber,
-          note: this.$refs.docTabs.note
-        },
-        currentTab: this.$refs.docTabs.currentTab
+          password: this.password
+        }
       }
-      this.signUp(payload);
+      await this.signUp(payload)
+      await this.$router.push('/')
     }
   }
 }

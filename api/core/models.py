@@ -1,11 +1,40 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+import jwt
+from django.conf import settings
+from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+
+
+class ClientManager(BaseUserManager):
+    def create_user(self, username, email, first_name, second_name, third_name, birth_date, phone, password=None):
+        if username is None:
+            raise TypeError('User must have a username.')
+        if email is None:
+            raise TypeError('User must have an email address.')
+        if first_name is None:
+            raise TypeError('User must have an first name.')
+        if second_name is None:
+            raise TypeError('User must have an second name.')
+        if third_name is None:
+            raise TypeError('User must have an third name.')
+
+        user = self.model(username=username, email=self.normalize_email(email), first_name=first_name,
+                          second_name=second_name, third_name=third_name, birth_date=birth_date, phone=phone)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, username, email, first_name, second_name, third_name, birth_date, phone, password):
+        """ Создает и возввращет пользователя с привилегиями суперадмина. """
+        if password is None:
+            raise TypeError('Superusers must have a password.')
+
+        user = self.create_user(username, email, first_name, second_name, third_name, birth_date, phone, password)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+
+        return user
 
 
 class Doc(models.Model):
@@ -15,17 +44,52 @@ class Doc(models.Model):
         db_table = 'Doc'
 
 
-class Client(models.Model):
-    secondName = models.CharField(max_length=20, blank=False, null=False)
-    firstName = models.CharField(max_length=20, blank=False, null=False)
-    thirdName = models.CharField(max_length=20, blank=False, null=False)
-    phone = models.CharField(max_length=20, blank=False, null=False)
-    email = models.CharField(max_length=20, blank=False, null=False)
-    birthDate = models.DateField(blank=False, null=False)
-    doc = models.ForeignKey(Doc, on_delete=models.CASCADE)
+class Police(models.Model):
+    geoJson = models.TextField(blank=False, null=False)
+    cadastralNumber = models.CharField(max_length=20, blank=False, null=False)
+    price = models.FloatField(blank=False, null=False)
+    term = models.IntegerField(blank=False, null=False)
+    coating = models.FloatField(blank=False, null=False)
+    startDate = models.DateField(blank=False, null=False)
 
     class Meta:
-        db_table = 'Client'
+        db_table = 'Police'
+
+
+class Client(AbstractBaseUser, PermissionsMixin):
+    polices = models.ManyToManyField(Police, null=True)
+    docs = models.ManyToManyField(Doc, null=True)
+    username = models.CharField(max_length=200, blank=False, null=False)
+    first_name = models.CharField(max_length=100, blank=False, null=False)
+    second_name = models.CharField(max_length=100, blank=False, null=False)
+    third_name = models.CharField(max_length=100, blank=False, null=False)
+    phone = models.CharField(max_length=20, blank=False, null=False)
+    birth_date = models.DateField(blank=False, null=False)
+    email = models.EmailField(blank=False, null=False, unique=True, db_index=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    objects = ClientManager()
+
+    def __str__(self):
+        return self.email
+
+    @property
+    def token(self):
+        return self._generate_jwt_token()
+
+    def _generate_jwt_token(self):
+
+        token = jwt.encode({
+            'id': self.pk,
+            'exp': 1543828431
+        }, settings.SECRET_KEY, algorithm='HS256')
+
+        return token
 
 
 class ForeignPassport(models.Model):
@@ -44,29 +108,6 @@ class IDCard(models.Model):
 
     class Meta:
         db_table = 'IDCard'
-
-
-class InsuredEvent(models.Model):
-    description = models.CharField(max_length=100, blank=False, null=False)
-    hint = models.CharField(max_length=100, blank=False, null=False)
-    impactPrice = models.FloatField(blank=False, null=False)
-
-    class Meta:
-        db_table = 'InsuredEvent'
-
-
-class Police(models.Model):
-    geoJson = models.TextField(blank=False, null=False)
-    cadastralNumber = models.CharField(max_length=20, blank=False, null=False)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=False, null=False)
-    price = models.FloatField(blank=False, null=False)
-    term = models.IntegerField(blank=False, null=False)
-    coating = models.FloatField(blank=False, null=False)
-    startDate = models.DateField(blank=False, null=False)
-    ensuredEvents = models.ManyToManyField(InsuredEvent)
-
-    class Meta:
-        db_table = 'Police'
 
 
 class UkrainePassport(models.Model):

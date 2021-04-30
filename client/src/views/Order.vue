@@ -1,5 +1,6 @@
 <template>
     <v-container fluid>
+
         <v-row>
             <v-col>
                 <v-text-field
@@ -110,9 +111,12 @@
           <control-map></control-map>
         </v-container>
         <div>
-            <v-btn color="primary" large block :to="'/checkout'">
+            <v-btn color="primary" large block @click="checkout" v-if="!loading">
                 Продовжити
             </v-btn>
+          <v-btn color="primary" disabled large block v-else>
+            Обрахування особливостей поля...
+          </v-btn>
         </div>
     </v-container>
 </template>
@@ -127,8 +131,18 @@
         data: () => ({
           date: new Date().toISOString().substr(0, 10),
           menu: false,
-          currentTab: 1
+          currentTab: 1,
+          loading: false
         }),
+        methods: {
+          checkout() {
+            this.loading = true;
+            setTimeout(() => {
+              this.$router.push('/checkout')
+              this.loading = false
+            }, 3000)
+          }
+        },
         components: {DocTabs, DatePicker, InsuredEventSelector, ControlMap}
     }
 </script>

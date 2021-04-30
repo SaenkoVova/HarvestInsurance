@@ -19,7 +19,7 @@
           </tr>
           <tr>
             <td>Телефон</td>
-            <td>+380674470622</td>
+            <td>0674470622</td>
           </tr>
           <tr>
             <td>Електронна пошта</td>
@@ -38,7 +38,7 @@
           </tr>
           <tr>
             <td>Дата видачі</td>
-            <td>16.06.2016</td>
+            <td>18.06.2016</td>
           </tr>
           <tr>
             <td>Ким виданий</td>
@@ -50,7 +50,7 @@
       <div>
         <p>
           <span class="display-1">До сплати: </span>
-          <span class="display-2">100 грн</span>
+          <span class="display-2">1000 грн</span>
         </p>
       </div>
       <div>

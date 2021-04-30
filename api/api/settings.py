@@ -31,15 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djoser',
+    'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders',
-    'core',
     'ckeditor',
     'ckeditor_uploader',
 ]
@@ -74,6 +76,12 @@ TEMPLATES = [
         },
     },
 ]
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
+# }
+
+AUTH_USER_MODEL = "core.Client"
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
