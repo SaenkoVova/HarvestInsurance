@@ -8,6 +8,7 @@ import FieldState from '../views/FieldState'
 import Register from '../views/Register'
 import PageNotFound from '../views/404'
 import Store from '@/store'
+import Dashboard from "../views/Dashboard";
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,14 @@ const routes = [
     path: '/order',
     name: 'Order',
     component: Order,
+    meta: {
+      requiredAuth: true
+    }
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
     meta: {
       requiredAuth: true
     }
@@ -53,7 +62,17 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register,
+    beforeEnter(to, from, next) {
+      if(Store.getters['user/getAuthState']) {
+        next({
+          path: '/'
+        })
+      }
+      else {
+        next()
+      }
+    }
   },
   {
     path: '*',

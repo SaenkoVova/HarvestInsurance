@@ -30,14 +30,16 @@
                 app
         >
             <v-app-bar-nav-icon @click.stop="miniVariant = !miniVariant" />
-            <v-toolbar-title v-text="title" />
+            <router-link :to="'/'" class="toolbar-title">
+              <v-toolbar-title v-text="title" />
+            </router-link>
             <v-spacer />
             <v-btn-toggle v-if="getAuthState">
                 <v-btn
                     color="primary"
                     :to="'/profile'"
                 >
-                  Особистий кабінет
+                  {{getName || 'hell'}}
                   <v-icon
                       right
                       color="white"
@@ -54,6 +56,15 @@
                     <v-icon dark>
                         mdi-weather-night
                     </v-icon>
+                </v-btn>
+                <v-btn
+                    dark
+                    color="primary"
+                    @click="logOut"
+                >
+                  <v-icon dark>
+                    mdi-exit-to-app
+                  </v-icon>
                 </v-btn>
             </v-btn-toggle>
             <v-btn-toggle v-else>
@@ -97,40 +108,56 @@
 
 <script>
     import AuthUser from "./components/popups/AuthUser";
-    import {mapGetters} from "vuex";
+    import {mapActions, mapGetters, mapMutations} from "vuex";
     export default {
-        data () {
-            return {
-                clipped: true,
-                drawer: true,
-                fixed: true,
-                items: [
-                    {
-                        icon: 'mdi-apps',
-                        title: 'Головна',
-                        to: '/'
-                    },
-                    {
-                        icon: 'mdi-chart-bubble',
-                        title: 'Оформити поліс',
-                        to: '/order'
-                    },
-                    {
-                        icon: 'mdi-police-badge-outline',
-                        title: 'faQ',
-                        to: '/polices'
-                    }
-                ],
-                miniVariant: false,
-                title: 'Страхування врожаю'
-            }
-        },
-        computed: {
-          ...mapGetters({
-            getAuthState: 'user/getAuthState'
-          })
-        },
-        components: {
+      data () {
+          return {
+            clipped: true,
+            drawer: true,
+            fixed: true,
+            items: [
+              {
+                icon: 'mdi-apps',
+                title: 'Головна',
+                to: '/'
+              },
+              {
+                icon: 'mdi-chart-bubble',
+                title: 'Оформити поліс',
+                to: '/order'
+              },
+              {
+                icon: 'mdi-desktop-mac-dashboard',
+                title: 'Панель керування',
+                to: '/dashboard'
+              }
+            ],
+            miniVariant: false,
+            title: 'Страхування врожаю'
+          }
+      },
+      computed: {
+        ...mapGetters({
+          getAuthState: 'user/getAuthState',
+          getName: 'user/getName'
+        })
+      },
+      methods: {
+        ...mapMutations({
+          unsetUser: 'user/unsetUser'
+        }),
+        ...mapActions({
+          loadUserInfo: 'user/loadUserInfo'
+        }),
+        logOut() {
+          this.unsetUser()
+          this.$router.push('/')
+        }
+      },
+      mounted() {
+        this.loadUserInfo()
+      },
+      components: {
             AuthUser
         }
     }
@@ -150,5 +177,10 @@
     ::-webkit-scrollbar-thumb {
         background: #363636;
         border-radius: 10px;
+    }
+
+    .toolbar-title {
+      color: #fff!important;
+      text-decoration: none!important;
     }
 </style>

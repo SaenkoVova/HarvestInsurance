@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a02d71fd-418b-49ff-81ca-ce8643896d95" name="Default Changelist" comment="add register and token generation">
+    <list default="true" id="a02d71fd-418b-49ff-81ca-ce8643896d95" name="Default Changelist" comment="add login">
+      <change afterPath="$PROJECT_DIR$/api/core/backends.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/core/exceptions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/api/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/api/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/core/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/popups/AuthUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/popups/AuthUser.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/plugins/vuetify.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/plugins/vuetify.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/store/modules/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/modules/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/Profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Register.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +78,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619819919251</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add login">
+      <created>1619821353994</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1619821353994</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -88,6 +107,7 @@
     <MESSAGE value="created models" />
     <MESSAGE value="init" />
     <MESSAGE value="add register and token generation" />
-    <option name="LAST_COMMIT_MESSAGE" value="add register and token generation" />
+    <MESSAGE value="add login" />
+    <option name="LAST_COMMIT_MESSAGE" value="add login" />
   </component>
 </project>

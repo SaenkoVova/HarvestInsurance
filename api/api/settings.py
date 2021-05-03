@@ -77,10 +77,6 @@ TEMPLATES = [
     },
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
-# }
-
 AUTH_USER_MODEL = "core.Client"
 
 WSGI_APPLICATION = 'api.wsgi.application'
@@ -149,3 +145,11 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'core.exceptions.core_exception_handler',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'core.backends.JWTAuthentication',
+    ),
+    'NON_FIELD_ERRORS_KEY': 'error',
+}

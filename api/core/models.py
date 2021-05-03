@@ -4,6 +4,8 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
+import datetime
+
 
 class ClientManager(BaseUserManager):
     def create_user(self, username, email, first_name, second_name, third_name, birth_date, phone, password=None):
@@ -83,10 +85,9 @@ class Client(AbstractBaseUser, PermissionsMixin):
         return self._generate_jwt_token()
 
     def _generate_jwt_token(self):
-
         token = jwt.encode({
             'id': self.pk,
-            'exp': 1543828431
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=3600)
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token
