@@ -147,15 +147,17 @@
           unsetUser: 'user/unsetUser'
         }),
         ...mapActions({
-          loadUserInfo: 'user/loadUserInfo'
+          loadUserInfo: 'user/loadUserInfo',
+          loadUserDocs: 'user/loadUserDocs'
         }),
         logOut() {
           this.unsetUser()
           this.$router.push('/')
         }
       },
-      mounted() {
-        this.loadUserInfo()
+      async mounted() {
+        await this.loadUserInfo()
+        await this.loadUserDocs()
       },
       components: {
             AuthUser

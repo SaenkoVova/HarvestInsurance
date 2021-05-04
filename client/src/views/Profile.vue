@@ -100,7 +100,25 @@
         </v-form>
       </v-col>
       <v-col>
-
+        <h1 class="title mx-5 mb-5">Додати документи</h1>
+        <doc-tabs ref="docTabs"></doc-tabs>
+        <v-btn
+            large
+            block
+            color="primary"
+            dark
+            @click="uploadDocument"
+        >
+          Додати документ
+          <v-icon
+              right
+              dark
+          >
+            mdi-cloud-upload
+          </v-icon>
+        </v-btn>
+        <h1 class="title mx-5 mb-5 mt-5">Ваші документи</h1>
+        <docs-list></docs-list>
       </v-col>
     </v-row>
   </v-container>
@@ -110,9 +128,12 @@
 
 import {mapActions, mapGetters} from "vuex";
 import http from "../util/http";
+import DocTabs from "../components/order/DocTabs";
+import DocsList from "../components/profile/DocsList";
 
 export default {
   name: 'Profile',
+  components: {DocsList, DocTabs},
   data: () => ({
     valid: false,
     secondName: '',
@@ -147,10 +168,31 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadUserInfo: 'user/loadUserInfo'
+      loadUserInfo: 'user/loadUserInfo',
+      loadUserDocs: 'user/loadUserDocs'
     }),
     save (date) {
       this.$refs.menu.save(date)
+    },
+    uploadDocument() {
+      const doc = {
+        doc: {
+          passport_issue: this.$refs.docTabs.issueDate,
+          series_and_number: this.$refs.docTabs.seriesAndNumber,
+          issued_by: this.$refs.docTabs.issuedBy,
+          number: this.$refs.docTabs.number,
+          note: this.$refs.docTabs.note
+        },
+        tab: this.$refs.docTabs.currentTab
+      }
+      http.post('uploadDocument/', doc, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+        .then(() => {
+          this.loadUserDocs();
+        })
     },
     changeUserInfo() {
       if(this.newPassword !== this.repeatPassword) {
@@ -174,8 +216,8 @@ export default {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
-        .then(res => {
-          console.log(res)
+        .then(() => {
+          this.loadUserInfo()
         })
     },
     initialize() {

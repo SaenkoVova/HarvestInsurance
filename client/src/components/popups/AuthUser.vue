@@ -87,7 +87,8 @@
       methods: {
         ...mapActions({
           logIn: 'user/logIn',
-          loadUserInfo: 'user/loadUserInfo'
+          loadUserInfo: 'user/loadUserInfo',
+          loadUserDocs: 'user/loadUserDocs'
         }),
         signIn() {
           let user = {
@@ -97,8 +98,9 @@
             }
           }
           this.logIn(user)
-            .then(() => {
-              this.loadUserInfo();
+            .then( async () => {
+              await this.loadUserInfo();
+              await this.loadUserDocs();
               this.dialog.value = false;
             })
         }

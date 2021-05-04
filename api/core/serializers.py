@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
-from .models import Client
+from .models import Client, UkrainePassport, ForeignPassport, IDCard
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -49,10 +49,10 @@ class LoginSerializer(serializers.Serializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Client
-        fields = ('email', 'first_name', 'second_name', 'third_name', 'phone', 'token', 'birth_date', 'docs', 'password')
+        fields = (
+            'email', 'first_name', 'second_name', 'third_name', 'phone', 'token', 'birth_date', 'password')
 
         read_only_fields = ('token',)
 
@@ -68,3 +68,45 @@ class ClientSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class UkrainePassportCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UkrainePassport
+
+        fields = '__all__'
+
+
+class ForeignPassportCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ForeignPassport
+
+        fields = '__all__'
+
+
+class IDCardCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IDCard
+
+        fields = '__all__'
+
+
+class UkrainePassportListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UkrainePassport
+        fields = ['series_and_number', 'passport_issue', 'issued_by']
+
+
+class ForeignPassportListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ForeignPassport
+        fields = ['series_and_number', 'passport_issue']
+
+
+class IDCardListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ForeignPassport
+        fields = ['issued_by', 'passport_issue', 'number', 'notation']

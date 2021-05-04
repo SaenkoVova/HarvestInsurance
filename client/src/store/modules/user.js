@@ -3,14 +3,16 @@ import http from "@/util/http";
 const userEndpoints = {
     REGISTER: `register/`,
     LOGIN: 'login/',
-    GET_USER_INFO: 'user'
+    GET_USER_INFO: 'user',
+    GET_USER_DOCS: 'loadUserDocuments/'
 }
 
 export default {
     namespaced: true,
     state: {
         isAuthorized: !!localStorage.getItem('token'),
-        user: {}
+        user: {},
+        docs: []
     },
     mutations: {
         setUser(state, payload) {
@@ -22,6 +24,9 @@ export default {
             state.user = null;
             state.isAuthorized = false;
             localStorage.removeItem('token');
+        },
+        setDocuments(state, payload) {
+            state.docs = payload
         }
     },
     actions: {
@@ -82,11 +87,25 @@ export default {
                         resolve()
                     })
             })
+        },
+        loadUserDocs({commit}) {
+            return new Promise(resolve => {
+                http.get(userEndpoints.GET_USER_DOCS, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                    .then(res => {
+                        commit('setDocuments', res.data)
+                        resolve()
+                    })
+            })
         }
     },
     getters: {
         getAuthState: state => state.isAuthorized,
         getName: state => state.user.firstName,
-        getUser: state => state.user
+        getUser: state => state.user,
+        getDocs: state => state.docs
     }
 }

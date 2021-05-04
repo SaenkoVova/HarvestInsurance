@@ -39,13 +39,6 @@ class ClientManager(BaseUserManager):
         return user
 
 
-class Doc(models.Model):
-    passportIssue = models.DateField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'Doc'
-
-
 class Police(models.Model):
     geoJson = models.TextField(blank=False, null=False)
     cadastralNumber = models.CharField(max_length=20, blank=False, null=False)
@@ -60,7 +53,6 @@ class Police(models.Model):
 
 class Client(AbstractBaseUser, PermissionsMixin):
     polices = models.ManyToManyField(Police, null=True)
-    docs = models.ManyToManyField(Doc, null=True)
     username = models.CharField(max_length=200, blank=False, null=False)
     first_name = models.CharField(max_length=100, blank=False, null=False)
     second_name = models.CharField(max_length=100, blank=False, null=False)
@@ -94,27 +86,21 @@ class Client(AbstractBaseUser, PermissionsMixin):
 
 
 class ForeignPassport(models.Model):
-    seriesAndNumber = models.CharField(max_length=20, blank=True, null=True)
-    doc = models.OneToOneField(Doc, on_delete=models.CASCADE, primary_key=True)
-
-    class Meta:
-        db_table = 'ForeignPassport'
+    passport_issue = models.DateField(blank=True, null=True)
+    series_and_number = models.CharField(max_length=20, blank=True, null=True)
+    client = models.ForeignKey(Client, unique=True, blank=False, null=False, on_delete=models.CASCADE)
 
 
 class IDCard(models.Model):
-    issuedBy = models.CharField(max_length=20, blank=True, null=True)
+    passport_issue = models.DateField(blank=True, null=True)
+    issued_by = models.CharField(max_length=20, blank=True, null=True)
     number = models.CharField(max_length=20, blank=True, null=True)
     notation = models.CharField(max_length=20, blank=True, null=True)
-    doc = models.OneToOneField(Doc, on_delete=models.CASCADE, primary_key=True)
-
-    class Meta:
-        db_table = 'IDCard'
+    client = models.ForeignKey(Client, unique=True, blank=False, null=False, on_delete=models.CASCADE)
 
 
 class UkrainePassport(models.Model):
-    seriesAndNumber = models.CharField(max_length=20, blank=False, null=False)
-    issuedBy = models.CharField(blank=False, null=False, max_length=20)
-    doc = models.OneToOneField(Doc, on_delete=models.CASCADE, primary_key=True)
-
-    class Meta:
-        db_table = 'UkrainePassport'
+    series_and_number = models.CharField(max_length=20, blank=False, null=False)
+    passport_issue = models.DateField(blank=True, null=True)
+    issued_by = models.CharField(blank=False, null=False, max_length=20)
+    client = models.ForeignKey(Client, unique=True, blank=False, null=False, on_delete=models.CASCADE)
