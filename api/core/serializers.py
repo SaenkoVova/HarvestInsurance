@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
-from .models import Client, UkrainePassport, ForeignPassport, IDCard
+from .models import Client, UkrainePassport, ForeignPassport, IDCard, Police, Notification
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -92,21 +92,36 @@ class IDCardCreateSerializer(serializers.ModelSerializer):
 
 
 class UkrainePassportListSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = UkrainePassport
-        fields = ['series_and_number', 'passport_issue', 'issued_by']
+        fields = ['id', 'series_and_number', 'passport_issue', 'issued_by']
 
 
 class ForeignPassportListSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ForeignPassport
-        fields = ['series_and_number', 'passport_issue']
+        fields = ['id', 'series_and_number', 'passport_issue']
 
 
 class IDCardListSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ForeignPassport
-        fields = ['issued_by', 'passport_issue', 'number', 'notation']
+        fields = ['id', 'issued_by', 'passport_issue', 'number', 'notation']
+
+
+class OrdersRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Police
+        fields = ['id', 'cadastralNumber', 'status', 'startDate', 'term']
+
+
+class OrderDetailsRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Police
+        fields = '__all__'
+
+
+class NotificationsRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'

@@ -1,27 +1,36 @@
 <template>
     <v-container fluid>
-
+        <h1 class="display-1 mb-5">Оформлення страхового полісу</h1>
         <v-row>
             <v-col>
-                <v-text-field
-                        label="Строк страхування"
-                        outlined
-                ></v-text-field>
+              <p>Оберіть дату початку дії страхового полісу</p>
+              <v-date-picker
+                  v-model="startDate"
+                  full-width
+                  class="mt-4"
+              ></v-date-picker>
             </v-col>
             <v-col>
-                <v-text-field
-                        label="Сума покриття страхового випадку"
-                        outlined
-                ></v-text-field>
+              <p>Вкажіть кадастровий номер</p>
+              <v-text-field
+                  label="Кадастровий номер"
+                  outlined
+                  v-model="cadastralNumber"
+              ></v-text-field>
+              <p>Вкажіть строк страхування</p>
+              <v-text-field
+                  label="Строк страхування"
+                  outlined
+                  v-model="insuranceTerm"
+              ></v-text-field>
+              <p>Вкажіть суму покриття страхового випадку</p>
+              <v-text-field
+                  label="Сума покриття страхового випадку"
+                  outlined
+                  v-model="coverageAmount"
+              ></v-text-field>
             </v-col>
         </v-row>
-        <div>
-            <insured-event-selector></insured-event-selector>
-        </div>
-        <div>
-            <p>Оберіть дату початку дії страхового полісу</p>
-            <date-picker></date-picker>
-        </div>
         <div>
             <p>Особисті дані</p>
             <v-row>
@@ -29,18 +38,21 @@
                     <v-text-field
                             label="Прізвище"
                             outlined
+                            v-model="secondName"
                     ></v-text-field>
                 </v-col>
                 <v-col :cols="6">
                     <v-text-field
                             label="Ім'я"
                             outlined
+                            v-model="firstName"
                     ></v-text-field>
                 </v-col>
                 <v-col :cols="6">
                     <v-text-field
                             label="Побатькові"
                             outlined
+                            v-model="thirdName"
                     ></v-text-field>
                 </v-col>
                 <v-col :cols="6">
@@ -87,7 +99,22 @@
                     </v-menu>
                 </v-col>
             </v-row>
-            <doc-tabs></doc-tabs>
+            <v-row>
+              <v-col>
+                <p>Оберіть документ</p>
+                <v-select v-if="getDocs"
+                    class="mt-7"
+                    :items="docsToString"
+                    label="Оберіть документ"
+                    outlined
+                    @change="selectDoc"
+                ></v-select>
+              </v-col>
+              <v-col>
+                <p>Додайте новий документ</p>
+                <doc-tabs></doc-tabs>
+              </v-col>
+            </v-row>
             <div>
                 <p>Контактні дані</p>
                 <v-row>
@@ -95,12 +122,14 @@
                         <v-text-field
                                 label="Телефон"
                                 outlined
+                                v-model="phone"
                         ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field
                                 label="E-mail"
                                 outlined
+                                v-model="email"
                         ></v-text-field>
                     </v-col>
                 </v-row>
@@ -111,11 +140,8 @@
           <control-map></control-map>
         </v-container>
         <div>
-            <v-btn color="primary" large block @click="checkout" v-if="!loading">
-                Продовжити
-            </v-btn>
-          <v-btn color="primary" disabled large block v-else>
-            Обрахування особливостей поля...
+          <v-btn color="primary" large block @click="checkout" v-if="!loading">
+              Продовжити
           </v-btn>
         </div>
     </v-container>
@@ -123,26 +149,125 @@
 
 <script>
     import ControlMap from "../components/order/ControlMap";
-    import InsuredEventSelector from "../components/order/InsuredEventSelector";
-    import DatePicker from "../components/order/DatePicker";
     import DocTabs from "@/components/order/DocTabs";
+    import {mapGetters, mapMutations} from "vuex";
+    import http from "../util/http";
+
+
     export default {
         name: 'Order',
         data: () => ({
           date: new Date().toISOString().substr(0, 10),
+          startDate: new Date().toISOString().substr(0, 10),
+          cadastralNumber: null,
+          insuranceTerm: null,
+          coverageAmount: null,
+          firstName: null,
+          secondName: null,
+          thirdName: null,
+          doc: null,
+          phone: null,
+          email: null,
           menu: false,
           currentTab: 1,
-          loading: false
+          selectedDocId: null,
+          loading: false,
+          docId: null,
+          docType: null
         }),
-        methods: {
-          checkout() {
-            this.loading = true;
-            setTimeout(() => {
-              this.$router.push('/checkout')
-              this.loading = false
-            }, 3000)
+        watch: {
+          getUser() {
+            this.initialize()
           }
         },
-        components: {DocTabs, DatePicker, InsuredEventSelector, ControlMap}
+        computed: {
+          ...mapGetters({
+            getDocs: 'user/getDocs',
+            getUser: 'user/getUser',
+            getConvertedCoords: 'map/getConvertedCoords'
+          }),
+          docsToString() {
+            let docs = []
+            const ukrainePassport = this.getDocs.find(i => i.type === 'ukraine_passport');
+            if(ukrainePassport) {
+              docs.push(`1. Серія і номер: ${ukrainePassport.series_and_number} Дати видачі: ${ukrainePassport.passport_issue} Ким виданий: ${ukrainePassport.issued_by}`)
+            }
+            const foreignPassport = this.getDocs.find(i => i.type === 'foreign_passport');
+            if(foreignPassport) {
+              docs.push(`2. Серія і номер: ${ukrainePassport.series_and_number} Коли виданий: ${ukrainePassport.passport_issue}`)
+            }
+            const idCard = this.getDocs.find(i => i.type === 'id_card');
+            if(idCard) {
+              docs.push(`3. Ким виданий: ${idCard.issued_by} Коли виданий: ${idCard.passport_issue} Номер: ${idCard.number} Примітки: ${idCard.notation}`)
+            }
+            return docs
+          }
+        },
+        methods: {
+          ...mapMutations({
+            setOrder: 'order/setOrder'
+          }),
+          initialize() {
+            this.firstName = this.getUser.firstName;
+            this.secondName = this.getUser.secondName;
+            this.thirdName = this.getUser.thirdName;
+            this.date = this.getUser.birthDate;
+            this.phone = this.getUser.phone;
+            this.email = this.getUser.email;
+          },
+          selectDoc(val) {
+            this.selectedDocId = val.split('.')[0]
+            if(Number(this.selectedDocId) === 1) {
+              const ukrainePassport = this.getDocs.find(i => i.type === 'ukraine_passport');
+              this.docId = ukrainePassport.id
+              this.docType = 'ukr'
+            }
+            if(Number(this.selectedDocId) === 2) {
+              const foreignPassport = this.getDocs.find(i => i.type === 'foreign_passport');
+              this.docId = foreignPassport.id
+              this.docType = 'foreign'
+            }
+            if(Number(this.selectedDocId) === 3) {
+              const idCard = this.getDocs.find(i => i.type === 'id_card');
+              this.docId = idCard.id
+              this.docType = 'id'
+            }
+          },
+          checkout() {
+            let geoJson = `{ "type": "Polygon","coordinates": [[ [${this.getConvertedCoords[0]}], [${this.getConvertedCoords[1]}], [${this.getConvertedCoords[2]}], [${this.getConvertedCoords[3]}], [${this.getConvertedCoords[0]}] ]]}`
+            let data = {
+              checkout: {
+                geoJson,
+                term: this.insuranceTerm,
+                coating: this.coverageAmount
+              }
+            }
+            http.post('getPrice/', data, {
+              headers: {
+                Authorization: `Bearer_${localStorage.getItem('token')}`
+              }
+            })
+              .then(res => {
+                this.setOrder({
+                  cadastralNumber: this.cadastralNumber,
+                  price: res.data,
+                  term: this.insuranceTerm,
+                  coating: this.coverageAmount,
+                  startDate: this.startDate,
+                  docType: this.docType,
+                  docId: this.docId,
+                  status: 0,
+                  geoJson
+                })
+                this.$router.push('/checkout')
+              })
+          }
+        },
+        mounted() {
+          if(this.getUser) {
+            this.initialize()
+          }
+        },
+      components: {DocTabs, ControlMap}
     }
 </script>

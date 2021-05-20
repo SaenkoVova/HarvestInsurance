@@ -35,11 +35,49 @@
             </router-link>
             <v-spacer />
             <v-btn-toggle v-if="getAuthState">
+              <v-menu offset-y left origin="center center"
+                      transition="scale-transition">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-badge
+                      overlap
+                      left
+                      color="green"
+                      :content="getNotifications.filter(i => i.state === 'unread').length.toString()">
+                    <v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="toggleMenu(attrs)">
+                      <v-icon>mdi-bell-alert</v-icon>
+                    </v-btn>
+                  </v-badge>
+                </template>
+                <v-list v-if="getNotifications.length">
+                  <v-list-item
+                      v-for="(item, index) in getNotifications"
+                      :key="index"
+                      :class="{unread: item.state === 'unread'}"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title class="title">
+                        {{convertNotification(item.notes)}}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        {{item.created}}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <v-btn fab small color="error" @click.stop="deleteNotification(item.id)">
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
                 <v-btn
                     color="primary"
                     :to="'/profile'"
                 >
-                  {{getName || 'hell'}}
+                  {{getName}}
                   <v-icon
                       right
                       color="white"
@@ -108,6 +146,7 @@
 
 <script>
     import AuthUser from "./components/popups/AuthUser";
+    import loadNotification from "./util/loadNotification";
     import {mapActions, mapGetters, mapMutations} from "vuex";
     export default {
       data () {
@@ -139,7 +178,8 @@
       computed: {
         ...mapGetters({
           getAuthState: 'user/getAuthState',
-          getName: 'user/getName'
+          getName: 'user/getName',
+          getNotifications: 'user/getNotifications'
         })
       },
       methods: {
@@ -148,16 +188,30 @@
         }),
         ...mapActions({
           loadUserInfo: 'user/loadUserInfo',
-          loadUserDocs: 'user/loadUserDocs'
+          loadUserDocs: 'user/loadUserDocs',
+          loadNotifications: 'user/loadNotifications',
+          readNotifications: 'user/readNotifications',
+          deleteNotification: 'user/deleteNotification'
         }),
+        toggleMenu(attrs) {
+          if(attrs['aria-expanded'] === 'false') {
+            setTimeout(() => {
+              this.readNotifications();
+            }, 1000)
+          }
+        },
         logOut() {
           this.unsetUser()
           this.$router.push('/')
+        },
+        convertNotification(type) {
+          return loadNotification.loadNotification(type)
         }
       },
       async mounted() {
         await this.loadUserInfo()
         await this.loadUserDocs()
+        await this.loadNotifications()
       },
       components: {
             AuthUser
@@ -184,5 +238,9 @@
     .toolbar-title {
       color: #fff!important;
       text-decoration: none!important;
+    }
+    .unread {
+      background: #2ecc71;
+      transition: 3s;
     }
 </style>

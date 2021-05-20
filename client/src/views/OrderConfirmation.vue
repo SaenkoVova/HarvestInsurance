@@ -60,17 +60,40 @@
         ></v-checkbox>
       </div>
       <div>
-        <v-btn>Перейти до оплати</v-btn>
+        <v-btn @click="createOrder">Перейти до оплати</v-btn>
       </div>
     </v-card>
   </v-container>
 </template>
 
 <script>
+  import http from "../util/http";
+  import {mapGetters} from "vuex";
+
   export default {
     name: 'OrderConfirmation',
     data: () => ({
       checkbox: true
-    })
+    }),
+    computed: {
+      ...mapGetters({
+        getOrder: 'order/getOrder'
+      })
+    },
+    methods: {
+      createOrder() {
+        let data = {
+          order: this.getOrder
+        }
+        http.post('createPolice/', data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+          .then(res => {
+            console.log(res)
+          })
+      }
+    }
   }
 </script>

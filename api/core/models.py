@@ -1,4 +1,5 @@
 import jwt
+from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -41,14 +42,29 @@ class ClientManager(BaseUserManager):
 
 class Police(models.Model):
     geoJson = models.TextField(blank=False, null=False)
-    cadastralNumber = models.CharField(max_length=20, blank=False, null=False)
+    cadastralNumber = models.CharField(max_length=50, blank=False, null=False)
     price = models.FloatField(blank=False, null=False)
     term = models.IntegerField(blank=False, null=False)
     coating = models.FloatField(blank=False, null=False)
     startDate = models.DateField(blank=False, null=False)
+    docType = models.CharField(blank=False, null=False, max_length=20)
+    docId = models.IntegerField(blank=False, null=False)
+    status = models.IntegerField(blank=False, null=False)
+    ndvi = ArrayField(
+        models.FloatField(blank=False, null=False), default=[]
+    )
+    dates = ArrayField(
+        models.DateField(blank=False, null=False), default=[]
+    )
 
     class Meta:
         db_table = 'Police'
+
+
+class Notification(models.Model):
+    created = models.DateField(blank=False, null=False, auto_now_add=True)
+    notes = models.CharField(blank=False, null=False, max_length=200)
+    state = models.CharField(blank=False, null=False, max_length=10, default='unread')
 
 
 class Client(AbstractBaseUser, PermissionsMixin):
@@ -62,7 +78,8 @@ class Client(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=False, null=False, unique=True, db_index=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True),
+    notifications = models.ManyToManyField(Notification, null=True, default=[])
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

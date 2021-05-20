@@ -4,7 +4,10 @@ const userEndpoints = {
     REGISTER: `register/`,
     LOGIN: 'login/',
     GET_USER_INFO: 'user',
-    GET_USER_DOCS: 'loadUserDocuments/'
+    GET_USER_DOCS: 'loadUserDocuments/',
+    GET_NOTIFICATIONS: 'loadNotifications/',
+    READ_NOTIFICATIONS: 'readNotifications/',
+    DELETE_NOTIFICATION: 'deleteNotification/'
 }
 
 export default {
@@ -12,7 +15,8 @@ export default {
     state: {
         isAuthorized: !!localStorage.getItem('token'),
         user: {},
-        docs: []
+        docs: [],
+        notifications: []
     },
     mutations: {
         setUser(state, payload) {
@@ -27,9 +31,26 @@ export default {
         },
         setDocuments(state, payload) {
             state.docs = payload
+        },
+        setNotifications(state, payload) {
+            state.notifications = payload;
         }
     },
     actions: {
+        readNotifications({dispatch}) {
+            return new Promise(resolve => {
+                http.get(userEndpoints.READ_NOTIFICATIONS, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                    .then(res => {
+                        dispatch('loadNotifications')
+                        console.log(res)
+                        resolve(res.data)
+                    })
+            })
+        },
         signUp({commit}, payload) {
             return new Promise(resolve => {
                 http.post(userEndpoints.REGISTER, payload)
@@ -88,6 +109,19 @@ export default {
                     })
             })
         },
+        loadNotifications ({commit}) {
+          return new Promise(resolve => {
+              http.get(userEndpoints.GET_NOTIFICATIONS, {
+                  headers: {
+                      Authorization: `Bearer ${localStorage.getItem('token')}`
+                  }
+              })
+                  .then(res => {
+                      commit('setNotifications', res.data);
+                      resolve()
+                  })
+          })
+        },
         loadUserDocs({commit}) {
             return new Promise(resolve => {
                 http.get(userEndpoints.GET_USER_DOCS, {
@@ -100,12 +134,29 @@ export default {
                         resolve()
                     })
             })
+        },
+        deleteNotification({dispatch}, payload) {
+            return new Promise(resolve =>  {
+                http.get(userEndpoints.DELETE_NOTIFICATION, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    params: {
+                        notificationId: payload
+                    }
+                })
+                    .then(() => {
+                        dispatch('loadNotifications')
+                        resolve()
+                    })
+            })
         }
     },
     getters: {
         getAuthState: state => state.isAuthorized,
         getName: state => state.user.firstName,
         getUser: state => state.user,
-        getDocs: state => state.docs
+        getDocs: state => state.docs,
+        getNotifications: state => state.notifications
     }
 }
