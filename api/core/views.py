@@ -17,7 +17,8 @@ import fiona
 from .models import Client, UkrainePassport, ForeignPassport, IDCard, Police, Notification
 from .serializers import RegistrationSerializer, LoginSerializer, ClientSerializer, UkrainePassportCreateSerializer, \
     ForeignPassportCreateSerializer, IDCardCreateSerializer, UkrainePassportListSerializer, \
-    ForeignPassportListSerializer, IDCardListSerializer, NotificationsRetrieveSerializer, OrderDetailsRetrieveSerializer
+    ForeignPassportListSerializer, IDCardListSerializer, NotificationsRetrieveSerializer, OrderDetailsRetrieveSerializer,\
+    OrdersRetrieveSerializer
 from django.conf import settings
 
 
@@ -178,7 +179,7 @@ class OrdersLoadView(APIView):
     def get(self, request):
         client = Client.objects.get(id=request.user)
         polices = client.polices.all()
-        serializer = NotificationsRetrieveSerializer(polices, many=True)
+        serializer = OrdersRetrieveSerializer(polices, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

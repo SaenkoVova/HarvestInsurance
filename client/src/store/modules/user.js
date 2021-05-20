@@ -88,11 +88,7 @@ export default {
         },
         loadUserInfo({commit}) {
             return new Promise(resolve => {
-                http.get(userEndpoints.GET_USER_INFO, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                })
+                http.get(userEndpoints.GET_USER_INFO)
                     .then(res => {
                         const user = {
                             birthDate: res.data.birth_date,

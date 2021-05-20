@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1 class="display-1">Cadastral number</h1>
     <div>
       <field-chart :height="300" id="1" :ndvi="ndvi" :dates="dates" v-if="loaded"></field-chart>
     </div>

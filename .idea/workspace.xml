@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a02d71fd-418b-49ff-81ca-ce8643896d95" name="Default Changelist" comment="add retrieve docs, delete docs">
+    <list default="true" id="a02d71fd-418b-49ff-81ca-ce8643896d95" name="Default Changelist" comment="add field image analyzing, add notifications">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/core/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/FieldState.vue/FieldChart.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/FieldState.vue/FieldChart.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/order/ControlMap.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/order/ControlMap.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/store/modules/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/modules/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/views/Dashboard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Dashboard.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/util/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/util/http.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/views/FieldState.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/FieldState.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/views/Order.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Order.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/views/OrderConfirmation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/OrderConfirmation.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620168965226</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="add field image analyzing, add notifications">
+      <created>1621495927128</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1621495927128</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,6 +136,7 @@
     <MESSAGE value="add login" />
     <MESSAGE value="add user profile and user update" />
     <MESSAGE value="add retrieve docs, delete docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="add retrieve docs, delete docs" />
+    <MESSAGE value="add field image analyzing, add notifications" />
+    <option name="LAST_COMMIT_MESSAGE" value="add field image analyzing, add notifications" />
   </component>
 </project>
