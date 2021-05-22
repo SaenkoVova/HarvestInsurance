@@ -8,5 +8,5 @@ export default new Vuetify({
     icons: {
         iconfont: 'mdi'
     },
-    theme: {dark: true}
+    theme: {dark: !localStorage.getItem('appTheme')}
 });

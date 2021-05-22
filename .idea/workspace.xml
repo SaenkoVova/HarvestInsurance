@@ -3,9 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="a02d71fd-418b-49ff-81ca-ce8643896d95" name="Default Changelist" comment="add field image analyzing, add notifications">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/util/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/util/http.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/views/FieldState.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/FieldState.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/assets/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/assets/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/core/NavigationDrawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/core/NavigationDrawer.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/home/BenefitsOnlineInsurance.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/home/InsuredEvents.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/home/ParalaxBaner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/home/ParalaxBaner.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Home.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

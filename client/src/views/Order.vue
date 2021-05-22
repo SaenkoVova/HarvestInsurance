@@ -1,149 +1,168 @@
 <template>
     <v-container fluid>
+      <v-form v-model="valid">
         <h1 class="display-1 mb-5">Оформлення страхового полісу</h1>
-        <v-row>
-            <v-col>
-              <p>Оберіть дату початку дії страхового полісу</p>
-              <v-date-picker
-                  v-model="startDate"
-                  full-width
-                  class="mt-4"
-              ></v-date-picker>
-            </v-col>
-            <v-col>
-              <p>Вкажіть кадастровий номер</p>
-              <v-text-field
-                  label="Кадастровий номер"
-                  outlined
-                  v-model="cadastralNumber"
-              ></v-text-field>
-              <p>Вкажіть строк страхування</p>
-              <v-text-field
-                  label="Строк страхування"
-                  outlined
-                  v-model="insuranceTerm"
-              ></v-text-field>
-              <p>Вкажіть суму покриття страхового випадку</p>
-              <v-text-field
-                  label="Сума покриття страхового випадку"
-                  outlined
-                  v-model="coverageAmount"
-              ></v-text-field>
-            </v-col>
-        </v-row>
-        <div>
-            <p>Особисті дані</p>
-            <v-row>
-                <v-col :cols="6">
-                    <v-text-field
-                            label="Прізвище"
-                            outlined
-                            v-model="secondName"
-                    ></v-text-field>
-                </v-col>
-                <v-col :cols="6">
-                    <v-text-field
+          <v-row>
+              <v-col>
+                <p>Оберіть дату початку дії страхового полісу</p>
+                <v-date-picker
+                    v-model="startDate"
+                    full-width
+                    class="mt-4"
+                ></v-date-picker>
+              </v-col>
+              <v-col>
+                <p>Вкажіть кадастровий номер</p>
+                <v-text-field
+                    label="Кадастровий номер"
+                    outlined
+                    v-model="cadastralNumber"
+                    :rules="[rules.required, rules.cadastralNumber]"
+                    maxlength="22"
+                    counter
+                ></v-text-field>
+                <p>Вкажіть строк страхування</p>
+                <v-text-field
+                    :rules="[rules.required, rules.term]"
+                    label="Строк страхування"
+                    outlined
+                    v-model="insuranceTerm"
+                ></v-text-field>
+                <p>Вкажіть суму покриття страхового випадку</p>
+                <v-text-field
+                    label="Сума покриття страхового випадку"
+                    :rules="[rules.required, rules.coverageAmount]"
+                    outlined
+                    v-model="coverageAmount"
+                ></v-text-field>
+              </v-col>
+          </v-row>
+          <div>
+              <p>Особисті дані</p>
+              <v-row>
+                  <v-col :cols="6">
+                      <v-text-field
+                          :rules="[rules.required]"
+                          label="Прізвище"
+                          outlined
+                          v-model="secondName"
+                      ></v-text-field>
+                  </v-col>
+                  <v-col :cols="6">
+                      <v-text-field
+                          :rules="[rules.required]"
                             label="Ім'я"
                             outlined
                             v-model="firstName"
-                    ></v-text-field>
+                      ></v-text-field>
+                  </v-col>
+                  <v-col :cols="6">
+                      <v-text-field
+                          :rules="[rules.required]"
+                          label="Побатькові"
+                          outlined
+                          v-model="thirdName"
+                      ></v-text-field>
+                  </v-col>
+                  <v-col :cols="6">
+                      <v-menu
+                              ref="menu"
+                              v-model="menu"
+                              :close-on-content-click="false"
+                              :return-value.sync="date"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                      >
+                          <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                      v-model="date"
+                                      label="Дата народження"
+                                      prepend-icon="mdi-calendar"
+                                      readonly
+                                      v-bind="attrs"
+                                      v-on="on"
+                              ></v-text-field>
+                          </template>
+                          <v-date-picker
+                                  v-model="date"
+                                  no-title
+                                  scrollable
+                          >
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                      text
+                                      color="primary"
+                                      @click="menu = false"
+                              >
+                                  Cancel
+                              </v-btn>
+                              <v-btn
+                                      text
+                                      color="primary"
+                                      @click="$refs.menu.save(date)"
+                              >
+                                  OK
+                              </v-btn>
+                          </v-date-picker>
+                      </v-menu>
+                  </v-col>
+              </v-row>
+              <v-row>
+                <v-col v-if="getAuthState">
+                  <p>Оберіть документ</p>
+                  <v-select v-if="getDocs"
+                      class="mt-7"
+                      :items="docsToString"
+                      label="Оберіть документ"
+                      outlined
+                      @change="selectDoc"
+                  ></v-select>
                 </v-col>
-                <v-col :cols="6">
-                    <v-text-field
-                            label="Побатькові"
-                            outlined
-                            v-model="thirdName"
-                    ></v-text-field>
+                <v-col>
+                  <p>Додайте новий документ</p>
+                  <doc-tabs></doc-tabs>
                 </v-col>
-                <v-col :cols="6">
-                    <v-menu
-                            ref="menu"
-                            v-model="menu"
-                            :close-on-content-click="false"
-                            :return-value.sync="date"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                    >
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                    v-model="date"
-                                    label="Дата народження"
-                                    prepend-icon="mdi-calendar"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                            ></v-text-field>
-                        </template>
-                        <v-date-picker
-                                v-model="date"
-                                no-title
-                                scrollable
-                        >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                    text
-                                    color="primary"
-                                    @click="menu = false"
-                            >
-                                Cancel
-                            </v-btn>
-                            <v-btn
-                                    text
-                                    color="primary"
-                                    @click="$refs.menu.save(date)"
-                            >
-                                OK
-                            </v-btn>
-                        </v-date-picker>
-                    </v-menu>
-                </v-col>
-            </v-row>
+              </v-row>
+              <div>
+                  <p>Контактні дані</p>
+                  <v-row>
+                      <v-col>
+                          <v-text-field
+                              :rules="[rules.required]"
+                              label="Телефон"
+                              outlined
+                              v-model="phone"
+                          ></v-text-field>
+                      </v-col>
+                      <v-col>
+                          <v-text-field
+                              :rules="[rules.required, rules.email]"
+                              label="E-mail"
+                              outlined
+                              v-model="email"
+                          ></v-text-field>
+                      </v-col>
+                  </v-row>
+              </div>
+          </div>
+          <v-container>
+            <p>Обведіть земельну ділянку маркерами</p>
             <v-row>
-              <v-col>
-                <p>Оберіть документ</p>
-                <v-select v-if="getDocs"
-                    class="mt-7"
-                    :items="docsToString"
-                    label="Оберіть документ"
-                    outlined
-                    @change="selectDoc"
-                ></v-select>
+              <v-col :cols="9">
+                <control-map></control-map>
               </v-col>
-              <v-col>
-                <p>Додайте новий документ</p>
-                <doc-tabs></doc-tabs>
+              <v-col :cols="3">
+                <control-map></control-map>
               </v-col>
             </v-row>
-            <div>
-                <p>Контактні дані</p>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                                label="Телефон"
-                                outlined
-                                v-model="phone"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col>
-                        <v-text-field
-                                label="E-mail"
-                                outlined
-                                v-model="email"
-                        ></v-text-field>
-                    </v-col>
-                </v-row>
-            </div>
-        </div>
-        <v-container>
-          <p>Обведіть земельну ділянку маркерами</p>
-          <control-map></control-map>
-        </v-container>
-        <div>
-          <v-btn color="primary" large block @click="checkout" v-if="!loading">
-              Продовжити
-          </v-btn>
-        </div>
+          </v-container>
+          <div>
+            <v-btn color="primary" :disabled="!valid" class="mt-5 mb-5" large block @click="checkout" v-if="!loading">
+                Продовжити
+            </v-btn>
+          </div>
+      </v-form>
     </v-container>
 </template>
 
@@ -157,9 +176,10 @@
     export default {
         name: 'Order',
         data: () => ({
+          valid: false,
           date: new Date().toISOString().substr(0, 10),
           startDate: new Date().toISOString().substr(0, 10),
-          cadastralNumber: null,
+          cadastralNumber: '',
           insuranceTerm: null,
           coverageAmount: null,
           firstName: null,
@@ -173,7 +193,17 @@
           selectedDocId: null,
           loading: false,
           docId: null,
-          docType: null
+          docType: null,
+          rules: {
+            required: value => !!value || 'Це поле обов\'язкове.',
+            cadastralNumber: value => value.length === 22 || 'Довжина кадастрового номера 22 символи',
+            coverageAmount: value => (isFinite(value) && value >= 1000 && value <= 100000) || 'Сума покриття має бути в межах від 1000 до 100000',
+            term: value => (isFinite(value) && value >= 365) || 'Мінімальний термін страхування 365 днів',
+            email: value => {
+              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              return pattern.test(value) || 'Неправильний e-mail.'
+            },
+          },
         }),
         watch: {
           getUser() {
@@ -184,7 +214,8 @@
           ...mapGetters({
             getDocs: 'user/getDocs',
             getUser: 'user/getUser',
-            getConvertedCoords: 'map/getConvertedCoords'
+            getConvertedCoords: 'map/getConvertedCoords',
+            getAuthState: 'user/getAuthState'
           }),
           docsToString() {
             let docs = []

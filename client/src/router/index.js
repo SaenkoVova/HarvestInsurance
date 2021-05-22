@@ -21,10 +21,7 @@ const routes = [
   {
     path: '/order',
     name: 'Order',
-    component: Order,
-    meta: {
-      requiredAuth: true
-    }
+    component: Order
   },
   {
     path: '/dashboard',
