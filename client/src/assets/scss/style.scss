@@ -1,0 +1,12 @@
+@import "lib/reset";
+@import "lib/fonts";
+@import "lib/mixins";
+@import "lib/bootstrap-grid/grid";
+@import "lib/popups&modals";
+@import "components/elements";
+
+
+// pages styles
+@import "layout/header";
+@import "layout/footer";
+@import "layout/index";
