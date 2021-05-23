@@ -26,6 +26,8 @@ export default {
         },
         unsetUser(state) {
             state.user = null;
+            state.docs = [];
+            state.notifications = [];
             state.isAuthorized = false;
             localStorage.removeItem('token');
         },

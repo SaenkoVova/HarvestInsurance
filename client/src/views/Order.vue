@@ -119,7 +119,7 @@
                       @change="selectDoc"
                   ></v-select>
                 </v-col>
-                <v-col>
+                <v-col v-if="!docId">
                   <p>Додайте новий документ</p>
                   <doc-tabs></doc-tabs>
                 </v-col>
@@ -154,7 +154,7 @@
             <v-btn color="primary" :disabled="!valid" class="mt-5 mb-5" large block @click="checkout" v-if="getAuthState">
                 Продовжити
             </v-btn>
-            <v-btn color="primary" :disabled="!valid" class="mt-5 mb-5" large block  v-else>
+            <v-btn color="primary" class="mt-5 mb-5" @click="makeOrderAfterLogin" large block  v-else>
               Увійдіть щоб продовжити
             </v-btn>
           </div>
@@ -216,7 +216,8 @@
             getDocs: 'user/getDocs',
             getUser: 'user/getUser',
             getConvertedCoords: 'map/getConvertedCoords',
-            getAuthState: 'user/getAuthState'
+            getAuthState: 'user/getAuthState',
+            getOrder: 'order/getOrder'
           }),
           docsToString() {
             let docs = []
@@ -237,8 +238,26 @@
         },
         methods: {
           ...mapMutations({
-            setOrder: 'order/setOrder'
+            setOrder: 'order/setOrder',
+            togglePopup: 'general/togglePopup',
+            setNotRegisteredUser: 'general/setNotRegisteredUser'
           }),
+          initOrderFields() {
+            this.startDate = this.getOrder.startDate;
+            this.insuranceTerm = this.getOrder.term;
+            this.coverageAmount = this.getOrder.coating;
+            this.cadastralNumber = this.getOrder.cadastralNumber;
+          },
+          makeOrderAfterLogin() {
+            this.togglePopup();
+            this.setNotRegisteredUser(true);
+            this.setOrder({
+              cadastralNumber: this.cadastralNumber,
+              term: this.insuranceTerm,
+              coating: this.coverageAmount,
+              startDate: this.startDate,
+            });
+          },
           initialize() {
             this.firstName = this.getUser.firstName;
             this.secondName = this.getUser.secondName;
@@ -304,6 +323,9 @@
         mounted() {
           if(this.getUser) {
             this.initialize()
+          }
+          if(this.getOrder) {
+            this.initOrderFields()
           }
         },
       components: {DocTabs, ControlMap}

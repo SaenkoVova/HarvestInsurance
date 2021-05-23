@@ -2,9 +2,11 @@
     <v-dialog
             transition="dialog-top-transition"
             max-width="600"
+            v-model="show"
     >
         <template v-slot:activator="{ on, attrs }">
             <v-btn
+                @click="togglePopup(on)"
                     color="primary"
                     v-bind="attrs"
                     v-on="on"
@@ -37,7 +39,7 @@
                         </v-row>
                         <v-row>
                             <span>Ще не маєте обліковго запису: </span>
-                            <span @click="dialog.value = false; $router.push('/register')" style="color: cornflowerblue; cursor: pointer"> зареєструйтесь</span>
+                            <span @click="show = false; $router.push('/register')" style="color: cornflowerblue; cursor: pointer"> зареєструйтесь</span>
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -62,7 +64,7 @@
 </template>
 
 <script>
-    import {mapActions} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
     export default {
       props: {
@@ -72,6 +74,7 @@
           }
       },
       data: () => ({
+        show: false,
         email: null,
         password: null,
         valid: false,
@@ -84,11 +87,24 @@
           },
         },
       }),
+      computed: {
+        ...mapGetters({
+          getAuthPopupActive: 'general/getAuthPopupActive'
+        })
+      },
+      watch: {
+        getAuthPopupActive() {
+          this.show = true;
+        }
+      },
       methods: {
         ...mapActions({
           logIn: 'user/logIn',
           loadUserInfo: 'user/loadUserInfo',
           loadUserDocs: 'user/loadUserDocs'
+        }),
+        ...mapMutations({
+          togglePopup: 'general/togglePopup'
         }),
         signIn() {
           let user = {
@@ -101,7 +117,7 @@
             .then( async () => {
               await this.loadUserInfo();
               await this.loadUserDocs();
-              this.dialog.value = false;
+              this.show = false;
             })
         }
       }

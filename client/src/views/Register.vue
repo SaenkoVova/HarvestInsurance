@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 export default {
   data: () => ({
     valid: false,
@@ -167,6 +167,11 @@ export default {
       },
     },
   }),
+  computed: {
+    ...mapGetters({
+      getNotRegisteredUser: 'general/getNotRegisteredUser'
+    })
+  },
   watch: {
     menu (val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
@@ -198,6 +203,10 @@ export default {
         }
       }
       await this.signUp(payload)
+      if(this.getNotRegisteredUser) {
+        await this.$router.push('/order')
+        return
+      }
       await this.$router.push('/')
     }
   }

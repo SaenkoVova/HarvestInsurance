@@ -3,66 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="a02d71fd-418b-49ff-81ca-ce8643896d95" name="Default Changelist" comment="add field image analyzing, add notifications">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/about-icon.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/arrow-down-green.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/arrow-down-mobile.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/arrow-down-white.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/arrow-down.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/burger-btn-close.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/burger-btn.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/community-icon.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/difference-icon-four.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/difference-icon-one.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/difference-icon-three.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/difference-icon-three.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/difference-icon-two.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/difference-icon.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/different-img.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/explorer-icon.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/grass-left.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/grass-right.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/history-img-2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/history-img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/innovated-img.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/resources-icon.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/img/wallet-icon.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/components/_elements.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/layout/_footer.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/layout/_header.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/layout/_index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/assets/scss/layout/_index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/_popups&amp;modals.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/breakpoints/mixins/_breakpoints.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/_functions.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/_grid.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/_variables.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/bootstrap-grid.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/mixins/_breakpoints.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/mixins/_grid-framework.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/mixins/_grid.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/utilities/_display.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/utilities/_flex.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/grid/utilities/_spacing.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/layout/mixins/_visibility.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/layout/utilities/_display.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/layout/utilities/_position.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/layout/utilities/_spacing.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/layout/utilities/_visibility.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/screenreaders/mixins/_screen-reader.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/screenreaders/utilities/_screenreaders.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/sizing/utilities/_sizing.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/text/mixins/_deprecate.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/text/mixins/_hover.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/text/mixins/_text-emphasis.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/text/mixins/_text-hide.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/text/mixins/_text-truncate.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/lib/bootstrap-grid/text/utilities/_text.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/scss/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/assets/scss/style.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/order/ControlMap.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/order/ControlMap.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/order/DocTabs.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/order/DocTabs.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/core/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/popups/AuthUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/popups/AuthUser.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/store/modules/general.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/modules/general.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/views/Order.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Order.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/views/OrderConfirmation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/OrderConfirmation.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Register.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
