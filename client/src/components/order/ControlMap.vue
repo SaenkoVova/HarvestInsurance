@@ -1,13 +1,18 @@
 <template>
-    <div>
+    <v-row>
+      <v-col :cols="9">
         <div id="map" style="height: 500px; z-index: 1" />
-        <v-snackbar
-                v-model="snackbar"
-                :timeout="2000"
-        >
-            Поле вже сформовано...
-        </v-snackbar>
-    </div>
+      </v-col>
+      <v-col :cols="3">
+        <v-btn block large color="primary" @click="clearCoords">Очистити кординати</v-btn>
+      </v-col>
+      <v-snackbar
+              v-model="snackbar"
+              :timeout="2000"
+      >
+          Поле вже сформовано...
+      </v-snackbar>
+    </v-row>
 </template>
 
 <script>
@@ -18,7 +23,8 @@
           map: null,
           markerCounter: 0,
           snackbar: false,
-          icon: null
+          icon: null,
+          layerGroup: null
         }),
         computed: {
           ...mapGetters({
@@ -47,23 +53,34 @@
               layers: 'TOPO-OSM-WMS',
               format: 'image/png',
               transparent: true,
-              attribution: 'Image tiles: &copy <a href="https://land.gov.ua/">ЦДЗК</a>'
           }).addTo(this.map);
-          this.map.on('click', this.onMapClick)
-
+          this.layerGroup = L.layerGroup().addTo(this.map);
+          this.map.on('click', this.onMapClick);
+          this.initMapFromStore();
         },
         methods: {
             ...mapMutations({
-              setCoords: 'map/setCoords'
+              setCoords: 'map/setCoords',
+              unsetCoords: 'map/unsetCoords'
             }),
+            initMapFromStore() {
+              if(!this.getCoords.length) {
+                return;
+              }
+              this.getCoords.map(i => L.marker(i, {icon: this.icon}).addTo(this.layerGroup))
+              L.polygon(this.getCoords, { color: 'red' }).addTo(this.layerGroup)
+            },
+            clearCoords() {
+              this.unsetCoords();
+              this.layerGroup.clearLayers();
+            },
             onMapClick (e) {
                 if (this.getCoords.length >= 4) { this.snackbar = true; return }
-                L.marker(e.latlng, {icon: this.icon}).addTo(this.map);
+                L.marker(e.latlng, {icon: this.icon}).addTo(this.layerGroup);
                 this.setCoords(e.latlng)
-                console.log(e.latlng)
                 if (this.getCoords.length === 4) {
                     this.setCoords(this.getCoords[0])
-                    L.polygon(this.getCoords, { color: 'red' }).addTo(this.map)
+                    L.polygon(this.getCoords, { color: 'red' }).addTo(this.layerGroup)
                 }
             }
         }

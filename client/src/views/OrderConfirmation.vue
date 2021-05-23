@@ -5,33 +5,35 @@
         :elevation="2"
         class="pa-5"
     >
-      <p class="font-weight-bold">Страхувальник</p>
       <v-simple-table>
         <template v-slot:default>
           <tbody>
           <tr>
+            <td class="font-weight-bold">
+              Страхувальник
+            </td>
+            <td></td>
+          </tr>
+          <tr>
             <td>Повне ім'я</td>
-            <td>Саєнко Володимир Володимирович</td>
+            <td>{{getOrder.secondName}} {{getOrder.firstName}} {{getOrder.thirdName}}</td>
           </tr>
           <tr>
             <td>Дата рождения</td>
-            <td>08.05.2000</td>
+            <td>{{getOrder.date}}</td>
           </tr>
           <tr>
             <td>Телефон</td>
-            <td>0674470622</td>
+            <td>{{ getOrder.phone }}</td>
           </tr>
           <tr>
             <td>Електронна пошта</td>
-            <td>vova080520@gmail.com</td>
+            <td>{{getOrder.email}}</td>
           </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-      <p class="font-weight-bold">Документ</p>
-      <v-simple-table>
-        <template v-slot:default>
-          <tbody>
+          <tr>
+            <td class="font-weight-bold">Документ</td>
+            <td></td>
+          </tr>
           <tr>
             <td>ID карта</td>
             <td>000089376</td>
@@ -50,7 +52,7 @@
       <div>
         <p>
           <span class="display-1">До сплати: </span>
-          <span class="display-2">1000 грн</span>
+          <span class="display-2">{{ getOrder.price }} грн</span>
         </p>
       </div>
       <div>
@@ -97,3 +99,9 @@
     }
   }
 </script>
+
+<style>
+ td {
+   padding: 10px!important;
+ }
+</style>

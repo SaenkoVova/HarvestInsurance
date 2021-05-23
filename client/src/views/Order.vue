@@ -148,18 +148,14 @@
           </div>
           <v-container>
             <p>Обведіть земельну ділянку маркерами</p>
-            <v-row>
-              <v-col :cols="9">
-                <control-map></control-map>
-              </v-col>
-              <v-col :cols="3">
-                <control-map></control-map>
-              </v-col>
-            </v-row>
+            <control-map></control-map>
           </v-container>
           <div>
-            <v-btn color="primary" :disabled="!valid" class="mt-5 mb-5" large block @click="checkout" v-if="!loading">
+            <v-btn color="primary" :disabled="!valid" class="mt-5 mb-5" large block @click="checkout" v-if="getAuthState">
                 Продовжити
+            </v-btn>
+            <v-btn color="primary" :disabled="!valid" class="mt-5 mb-5" large block  v-else>
+              Увійдіть щоб продовжити
             </v-btn>
           </div>
       </v-form>
@@ -206,6 +202,11 @@
           },
         }),
         watch: {
+          docId(val) {
+            if(val) {
+              this.valid = true
+            }
+          },
           getUser() {
             this.initialize()
           }
@@ -280,6 +281,12 @@
             })
               .then(res => {
                 this.setOrder({
+                  firstName: this.firstName,
+                  secondName: this.secondName,
+                  thirdName: this.thirdName,
+                  date: this.date,
+                  phone: this.phone,
+                  email: this.email,
                   cadastralNumber: this.cadastralNumber,
                   price: res.data,
                   term: this.insuranceTerm,
