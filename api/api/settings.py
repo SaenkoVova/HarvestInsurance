@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'HarvestInsurance',
+        'NAME': 'harvestinsurance',
         'USER': 'postgres',
         'PASSWORD': 'djdfy12345',
         'HOST': 'localhost',
