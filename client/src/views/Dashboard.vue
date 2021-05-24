@@ -18,7 +18,7 @@
         <v-spacer></v-spacer>
         <div>
           <v-btn large block color="primary" class="mb-2" :to="`/field-state/${item.id}`">Переглянути стан поля</v-btn>
-          <v-btn large block color="primary">Переглянути договір</v-btn>
+          <v-btn large block color="primary" @click="loadPdfData(item.id)">Переглянути договір</v-btn>
         </div>
       </v-card>
     </div>
@@ -28,12 +28,19 @@
 
 <script>
 import http from "../util/http";
+import 'jspdf-autotable'
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Dashboard',
   data: () => ({
     orders: []
   }),
+  computed: {
+    ...mapGetters({
+      getUser: 'user/getUser'
+    })
+  },
   methods: {
     loadOrders() {
       http.get('loadUserOrders/', {
@@ -44,6 +51,16 @@ export default {
         .then(res => {
           this.orders = res.data
         })
+    },
+    loadPdfData(id) {
+      http.get('loadOrderDetails/', {
+        params: {
+          police_id: id
+        }
+      })
+          .then(() => {
+
+          })
     },
     getLastDate(startDate, term) {
       startDate = new Date(startDate)

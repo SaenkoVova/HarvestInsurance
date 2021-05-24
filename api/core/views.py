@@ -1,6 +1,10 @@
+import io
 import json
 import os
-
+from django.http import FileResponse
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
 import numpy
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView
@@ -17,7 +21,8 @@ import fiona
 from .models import Client, UkrainePassport, ForeignPassport, IDCard, Police, Notification
 from .serializers import RegistrationSerializer, LoginSerializer, ClientSerializer, UkrainePassportCreateSerializer, \
     ForeignPassportCreateSerializer, IDCardCreateSerializer, UkrainePassportListSerializer, \
-    ForeignPassportListSerializer, IDCardListSerializer, NotificationsRetrieveSerializer, OrderDetailsRetrieveSerializer,\
+    ForeignPassportListSerializer, IDCardListSerializer, NotificationsRetrieveSerializer, \
+    OrderDetailsRetrieveSerializer, \
     OrdersRetrieveSerializer
 from django.conf import settings
 
@@ -28,6 +33,7 @@ class RegistrationAPIView(APIView):
 
     def post(self, request):
         user = request.data.get('user', {})
+        print(user)
 
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
@@ -188,7 +194,7 @@ class OrderDetailsLoadView(APIView):
     def get(self, request):
         police_id = request.GET['police_id']
         print(police_id)
-        police = Police.objects.get(id= police_id)
+        police = Police.objects.get(id=police_id)
         serializer = OrderDetailsRetrieveSerializer(police, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -268,48 +274,49 @@ class CreatePoliceView(APIView):
         print(order)
         user_id = request.user
         user_folder = os.path.join(settings.STATIC_DIR, 'sentinels', f'user_{user_id}')
+        orders_folders = os.path.join(settings.STATIC_DIR, 'orders')
         zipes_directory = os.path.join(settings.STATIC_DIR, 'sentinels', f'user_{user_id}', 'zipes')
         reprojected_directory = os.path.join(settings.STATIC_DIR, 'sentinels', f'user_{user_id}', 'reprojected')
         extract_directory = os.path.join(settings.STATIC_DIR, 'sentinels', f'user_{user_id}', 'extract')
         rasters_directory = os.path.join(settings.STATIC_DIR, 'sentinels', f'user_{user_id}', 'rasters')
         field_directory = os.path.join(settings.STATIC_DIR, 'sentinels', f'user_{user_id}', 'field')
-        # for file in os.listdir(zipes_directory):
-        #     with ZipFile(os.path.join(zipes_directory, file), 'r') as zip:
-        #         zip.extractall(path=extract_directory)
+        for file in os.listdir(zipes_directory):
+            with ZipFile(os.path.join(zipes_directory, file), 'r') as zip:
+                zip.extractall(path=extract_directory)
 
-        # for folder in os.listdir(extract_directory):
-        #     path_to_granule = os.path.join(extract_directory, folder, 'GRANULE')
-        #     for granule_folder in os.listdir(path_to_granule):
-        #         path = os.path.join(path_to_granule, granule_folder, 'IMG_DATA') + '\\'
-        #         bands_list = os.listdir(path)
-        #         bands = {item[-7:-4].lower() for item in bands_list}
-        #         if make_ndvi(path, bands, bands_list, color_mode, user_id):
-        #             print(path, 'completed')
+        for folder in os.listdir(extract_directory):
+            path_to_granule = os.path.join(extract_directory, folder, 'GRANULE')
+            for granule_folder in os.listdir(path_to_granule):
+                path = os.path.join(path_to_granule, granule_folder, 'IMG_DATA') + '\\'
+                bands_list = os.listdir(path)
+                bands = {item[-7:-4].lower() for item in bands_list}
+                if make_ndvi(path, bands, bands_list, True, user_id):
+                    print(path, 'completed')
 
-        # schema = {'geometry': 'Polygon', 'properties': {'fld_a': 'str:50'}}
-        # with fiona.open(os.path.join(user_folder, 'polygon.shp'), 'w', 'ESRI Shapefile', schema, crs='EPSG:4326') as layer:
-        #     layer.write({'geometry': json.loads(order['geoJson']), 'properties': {'fld_a': 'test'}})
+        schema = {'geometry': 'Polygon', 'properties': {'fld_a': 'str:50'}}
+        with fiona.open(os.path.join(user_folder, 'polygon.shp'), 'w', 'ESRI Shapefile', schema, crs='EPSG:4326') as layer:
+            layer.write({'geometry': json.loads(order['geoJson']), 'properties': {'fld_a': 'test'}})
 
-        # for raster in os.listdir(rasters_directory):
-        #     ds = gdal.Open(os.path.join(rasters_directory, raster))
-        #     gdal.Warp(os.path.join(reprojected_directory, raster), ds, dstSRS='EPSG:4326')
+        for raster in os.listdir(rasters_directory):
+            ds = gdal.Open(os.path.join(rasters_directory, raster))
+            gdal.Warp(os.path.join(reprojected_directory, raster), ds, dstSRS='EPSG:4326')
 
-        # with fiona.open(os.path.join(user_folder, 'polygon.shp'), "r") as shapefile:
-        #     shapes = [feature["geometry"] for feature in shapefile]
-        #     for raster in os.listdir(reprojected_directory):
-        #         with rasterio.open(os.path.join(reprojected_directory, raster)) as src:
-        #             out_image, out_transform = rasterio.mask.mask(src, shapes, crop=True)
-        #             out_meta = src.meta
-        #
-        #         out_meta.update({"driver": "GTiff",
-        #                          "height": out_image.shape[1],
-        #                          "width": out_image.shape[2],
-        #                          "transform": out_transform})
-        #
-        #         with rasterio.open(os.path.join(field_directory, raster), "w", **out_meta) as dest:
-        #             dest.write(out_image)
-        #
-        #         add_lut('d:\\Education\\graduateWork\\task2\\ndvi_palette.lut', os.path.join(field_directory, raster))
+        with fiona.open(os.path.join(user_folder, 'polygon.shp'), "r") as shapefile:
+            shapes = [feature["geometry"] for feature in shapefile]
+            for raster in os.listdir(reprojected_directory):
+                with rasterio.open(os.path.join(reprojected_directory, raster)) as src:
+                    out_image, out_transform = rasterio.mask.mask(src, shapes, crop=True)
+                    out_meta = src.meta
+
+                out_meta.update({"driver": "GTiff",
+                                 "height": out_image.shape[1],
+                                 "width": out_image.shape[2],
+                                 "transform": out_transform})
+
+                with rasterio.open(os.path.join(field_directory, raster), "w", **out_meta) as dest:
+                    dest.write(out_image)
+
+                add_lut('d:\\Education\\graduateWork\\task2\\ndvi_palette.lut', os.path.join(field_directory, raster))
         values = []
         dates = []
         for field in os.listdir(field_directory):
@@ -331,4 +338,17 @@ class CreatePoliceView(APIView):
         notification = Notification(notes='police_created')
         notification.save()
         client.notifications.add(notification)
+        client = Client.objects.get(id=request.user)
+        c = canvas.Canvas(os.path.join(orders_folders, 'Police_' + police.id + '_user_' + str(request.user)))
+        pdfmetrics.registerFont(TTFont('Verdana', 'Verdana.ttf'))
+        c.setFont("Verdana", 14)
+        c.drawString(50, 800, u'Страховий договір')
+        c.drawString(50, 740, u'Дата народження: ' + str(client.birth_date))
+        c.drawString(50, 710, u'Електронна пошта: ' + client.email)
+        c.drawString(50, 680, u'Мобільний телефон: ' + client.email)
+        c.drawString(50, 650, u'Місцезнаходження майна: ' + order['geoJson'])
+        c.drawString(50, 620, u'Загальна страхова сума за договором: ' + order['coating'])
+        c.showPage()
+        c.save()
+
         return Response(status=status.HTTP_201_CREATED)

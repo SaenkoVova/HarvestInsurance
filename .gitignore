@@ -4,14 +4,12 @@ node_modules
 static
 media
 migrations
-fionapreset
 
 
 # local env files
 .env.local
 .env.*.local
 
-*.whl
 
 # Log files
 npm-debug.log*

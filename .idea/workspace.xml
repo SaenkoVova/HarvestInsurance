@@ -5,10 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/core/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/core/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/popups/AuthUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/popups/AuthUser.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/store/modules/general.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/store/modules/general.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/views/Order.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Order.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/views/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Register.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/views/Dashboard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/views/Dashboard.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +50,7 @@
       <workItem from="1620122572112" duration="1420000" />
       <workItem from="1620221073305" duration="2000" />
       <workItem from="1621774188189" duration="9000" />
+      <workItem from="1621873243663" duration="40000" />
     </task>
     <task id="LOCAL-00001" summary="created models">
       <created>1617746542144</created>
