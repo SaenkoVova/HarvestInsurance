@@ -243,6 +243,7 @@
             setNotRegisteredUser: 'general/setNotRegisteredUser'
           }),
           initOrderFields() {
+            alert('hello')
             this.startDate = this.getOrder.startDate;
             this.insuranceTerm = this.getOrder.term;
             this.coverageAmount = this.getOrder.coating;

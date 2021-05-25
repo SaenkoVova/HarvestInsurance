@@ -62,7 +62,7 @@
         ></v-checkbox>
       </div>
       <div>
-        <v-btn @click="createOrder">Перейти до оплати</v-btn>
+        <v-btn @click="getPaymentPage">Перейти до оплати</v-btn>
       </div>
     </v-card>
   </v-container>
@@ -83,19 +83,30 @@
       })
     },
     methods: {
-      createOrder() {
-        let data = {
-          order: this.getOrder
-        }
-        http.post('createPolice/', data, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+      getPaymentPage() {
+        http.post('https://pay.fondy.eu/api/checkout/redirect/', {
+          response_url: "https://pay.fondy.eu/responsepage/",
+          order_id: "test8037875286",
+          order_desc: "Test payment",
+          currency: "RUB",
+          amount: "100",
+          signature: "07bc309047a56275f8d89ae222e2af0ceb94fe79",
+          merchant_id: "1"
         })
-          .then(res => {
-            console.log(res)
-          })
       }
+      // createOrder() {
+      //   let data = {
+      //     order: this.getOrder
+      //   }
+      //   http.post('createPolice/', data, {
+      //     headers: {
+      //       Authorization: `Bearer ${localStorage.getItem('token')}`
+      //     }
+      //   })
+      //     .then(res => {
+      //       console.log(res)
+      //     })
+      // }
     }
   }
 </script>

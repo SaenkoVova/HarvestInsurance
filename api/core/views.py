@@ -1,7 +1,8 @@
-import io
 import json
 import os
-from django.http import FileResponse
+
+from django.shortcuts import render
+from django.views.generic import TemplateView
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas

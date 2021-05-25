@@ -14,7 +14,7 @@ export default {
     namespaced: true,
     state: {
         isAuthorized: !!localStorage.getItem('token'),
-        user: {},
+        user: null,
         docs: [],
         notifications: []
     },
